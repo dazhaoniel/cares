@@ -1,4 +1,5 @@
 import re
+import sys
 import requests
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
@@ -19,36 +20,67 @@ payload = {
     'op': 'Log in'
 }
 
-with requests.Session() as s:
-    # Get the page first for https
-    s.get(urljoin(base_url, login_url))
+def sign_up(
+    is_coalition=False, 
+    is_rlc=False
+    ):
+    with requests.Session() as s:
+        # Get the page first for https
+        s.get(urljoin(base_url, login_url))
 
-    # Post the payload to the site to log in
-    post = s.post(urljoin(base_url, login_url), data=payload)
+        # Post the payload to the site to log in
+        post = s.post(urljoin(base_url, login_url), data=payload)
 
-    # Navigate to the project listings page
-    l = s.get('https://www.newyorkcares.org/search/projects/results?location=496')
+        # Navigate to the project listings page
+        l = s.get('https://www.newyorkcares.org/search/projects/results?location=496')
 
-    soup = BeautifulSoup(l.text, 'html.parser')
+        soup = BeautifulSoup(l.text, 'html.parser')
 
-    # Get last page
-    last_page_url = soup.find('a', class_='last')['href']
+        # Get last page
+        last_page_url = soup.find('a', class_='last')['href']
 
-    last_page = s.get(urljoin(base_url, last_page_url))
+        last_page = s.get(urljoin(base_url, last_page_url))
 
-    soup = BeautifulSoup(last_page.content, 'html.parser')
+        soup = BeautifulSoup(last_page.content, 'html.parser')
 
-    rlc = soup.find('a', href=re.compile(r'.*deliver-lunch-seniors*'))
+        # Find Coalition
+        if is_coalition:
+            project_link = soup.find('a', 
+            href=re.compile(r'.*'+coalition_regex+'*')
+        )
+        # Find RLC
+        elif is_rlc:
+            project_link = soup.find('a', 
+            href=re.compile(r'.*'+rlc_regex+'*')
+        )
 
-    proj = rlc.find_parent('div', class_='project')
+        proj = project_link.find_parent('div', class_='project')
 
-    proj_signup_link = proj.find('div', class_='sign-up').find('a')['href']
+        proj_signup_link = proj.find('div', class_='sign-up').find('a')['href']
 
-    success = s.get(urljoin(base_url, proj_signup_link))
+        success = s.get(urljoin(base_url, proj_signup_link))
 
-    # print(success)
+        # print(success)
 
 
+def main():
+    is_coalition = False
+    is_rlc = False
+
+    if len(sys.argv) != 2:
+        sys.exit('Add project name to sign up for')
+    elif bool(re.match('coalition', sys.argv[1])):
+        is_coalition = True
+    elif bool(re.match('rlc', sys.argv[1])):
+        is_rlc = True
+    else:
+        sys.exit()
+
+    sign_up(is_coalition, is_rlc)
+
+
+if __name__ == '__main__':
+    main()
 
 
 
