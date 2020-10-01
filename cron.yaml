@@ -1,7 +1,7 @@
 cron:
 - description: "thursday and friday 2am sign up coalition"
   url: /projects/coalition
-  schedule: every thursday,friday 00:15
+  schedule: every thursday,friday 02:00
 - description: "monday and wednesday 2am sign up rlc"
   url: /projects/rlc
-  schedule: every monday,wednesday 00:15
+  schedule: every monday,wednesday 02:00
