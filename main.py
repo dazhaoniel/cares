@@ -17,8 +17,8 @@ login_url = '/user'
 
 # Create the payload
 payload = {
-    'name':'danielantoiny@gmail.com',
-    'pass':'M1xQhG#SizxZy^NsF573',
+    'name':'',
+    'pass':'',
     'form_id': 'user_login',
     'op': 'Log in'
 }
