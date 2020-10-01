@@ -1,8 +1,11 @@
 import re
-import sys
+# import sys
 import requests
+from flask import Flask, request
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
+
+app = Flask(__name__)
 
 rlc_regex = 'rescue-good-food-becoming-waste'
 
@@ -62,25 +65,40 @@ def sign_up(
 
         # print(success)
 
+@app.route('/projects/coalition', methods=['GET'])
+def get_coalition():
+    sign_up(True, False)
+    return ('Signed up Coalition', 200)
 
-def main():
-    is_coalition = False
-    is_rlc = False
 
-    if len(sys.argv) != 2:
-        sys.exit('Add project name to sign up for')
-    elif bool(re.match('coalition', sys.argv[1])):
-        is_coalition = True
-    elif bool(re.match('rlc', sys.argv[1])):
-        is_rlc = True
-    else:
-        sys.exit()
+@app.route('/projects/rlc', methods=['GET'])
+def get_rlc():
+    sign_up(False, True)
+    return ('Signed up RLC', 200)
 
-    sign_up(is_coalition, is_rlc)
+
+@app.route('/', methods=['GET'])
+def hello_world():
+    return ('Hello World!', 200)
+
+# def main():
+#     is_coalition = False
+#     is_rlc = False
+
+#     if len(sys.argv) != 2:
+#         sys.exit('Add project name to sign up for')
+#     elif bool(re.match('coalition', sys.argv[1])):
+#         is_coalition = True
+#     elif bool(re.match('rlc', sys.argv[1])):
+#         is_rlc = True
+#     else:
+#         sys.exit()
+
+#     sign_up(is_coalition, is_rlc)
 
 
 if __name__ == '__main__':
-    main()
+    app.run(debug=True)
 
 
 
