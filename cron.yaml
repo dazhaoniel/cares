@@ -2,6 +2,10 @@ cron:
 - description: "thursday and friday 00:02am sign up coalition"
   url: /projects/coalition
   schedule: every thursday,friday 04:02
+  retry_parameters:
+    min_backoff_seconds: 300
 - description: "monday and wednesday 00:02am sign up rlc"
   url: /projects/rlc
   schedule: every monday,wednesday 04:02
+  retry_parameters:
+    min_backoff_seconds: 300
