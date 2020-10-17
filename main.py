@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 rlc_regex = 'rescue-good-food-becoming-waste'
 
-coalition_regex = 'mobilize-get-food-hungry-people'
+coalition_regex = 'staff-mobile-soup-kitchen'
 
 base_url = 'https://www.newyorkcares.org'
 
@@ -51,11 +51,17 @@ def sign_up(
             project_link = soup.find('a', 
             href=re.compile(r'.*'+coalition_regex+'*')
         )
+            if project_link is None:
+                project_link = soup.find('span', class_='agency-name', string='Coalition for the Homeless')
+
         # Find RLC
         elif is_rlc:
             project_link = soup.find('a', 
             href=re.compile(r'.*'+rlc_regex+'*')
         )
+            if project_link is None:
+                project_link = soup.find('span', class_='agency-name', string='Rescuing Leftover Cuisine')
+
 
         proj = project_link.find_parent('div', class_='project')
 
