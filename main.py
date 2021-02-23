@@ -50,18 +50,33 @@ def sign_up(
         if is_coalition:
             project_link = soup.find('a', 
             href=re.compile(r'.*'+coalition_regex+'*')
-        )
+            )
             if project_link is None:
-                project_link = soup.find('span', class_='agency-name', string='Coalition for the Homeless')
+                project_link = soup.find('span', 
+                    class_='agency-name', 
+                    string='Coalition for the Homeless'
+                )
 
         # Find RLC
         elif is_rlc:
-            project_link = soup.find('a', 
+            project_link = soup.findAll('a', 
             href=re.compile(r'.*'+rlc_regex+'*')
-        )
+            )
             if project_link is None:
-                project_link = soup.find('span', class_='agency-name', string='Rescuing Leftover Cuisine')
+                project_link = soup.findAll('span', 
+                    class_='agency-name', 
+                    string='Rescuing Leftover Cuisine'
+                )
 
+
+        if is_rlc:
+            # Find the Usq project
+            for link in project_link:
+                if link.find_parent('div', class_='project').find(
+                    string=re.compile('.*Union Square.*')
+                ):
+                    project_link = link
+                    break
 
         proj = project_link.find_parent('div', class_='project')
 
@@ -69,7 +84,7 @@ def sign_up(
 
         success = s.get(urljoin(base_url, proj_signup_link))
 
-        # print(success)
+        print(success)
 
 @app.route('/projects/coalition', methods=['GET'])
 def get_coalition():
@@ -89,7 +104,7 @@ def hello_world():
 
 # def main():
 #     is_coalition = False
-#     is_rlc = False
+#     is_rlc = True
 
 #     if len(sys.argv) != 2:
 #         sys.exit('Add project name to sign up for')
@@ -105,6 +120,7 @@ def hello_world():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    # main()
 
 
 
