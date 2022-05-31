@@ -1,11 +1,11 @@
 cron:
-# - description: "thursday and friday 00:00am sign up coalition"
-#   url: /projects/coalition
-#   schedule: every thursday,friday 04:00
-#   retry_parameters:
-#     min_backoff_seconds: 300
-# - description: "monday and wednesday 00:00am sign up rlc"
-#   url: /projects/rlc
-#   schedule: every monday,wednesday 04:00
-#   retry_parameters:
-#     min_backoff_seconds: 300
+- description: "thursday and friday 00:05am sign up coalition"
+  url: /projects/coalition
+  schedule: every thursday,friday 03:05
+  retry_parameters:
+    min_backoff_seconds: 300
+- description: "monday and wednesday 00:05am sign up rlc"
+  url: /projects/rlc
+  schedule: every monday,tuesday,wednesday 03:05
+  retry_parameters:
+    min_backoff_seconds: 300

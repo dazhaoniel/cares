@@ -9,7 +9,7 @@ gcloud app deploy app.yaml
 ```
 
 ```
-gcloud app deploy cron.yaml
+gcloud app deploy cron.yaml --project cares-291215
 ```
 
 ## Check cron job
