@@ -1,7 +1,8 @@
 import re
+
 # import sys
 import requests
-from flask import Flask, request
+from flask import Flask
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 
@@ -101,19 +102,19 @@ def sign_up(is_coalition=False, is_rlc=False):
     print(success)
 
 
-@app.route('/projects/coalition', methods=['GET'])
+@app.route("/projects/coalition", methods=["GET"])
 def get_coalition():
     sign_up(True, False)
     return ("Signed up Coalition", 200)
 
 
-@app.route('/projects/rlc', methods=['GET'])
+@app.route("/projects/rlc", methods=["GET"])
 def get_rlc():
     sign_up(False, True)
     return ("Signed up RLC", 200)
 
 
-@app.route('/', methods=['GET'])
+@app.route("/", methods=["GET"])
 def hello_world():
     return ("Hello World!", 200)
 
